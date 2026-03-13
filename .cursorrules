@@ -1,0 +1,42 @@
+# PigeonHouse Protocol — Cursor Rules
+
+You are working with PigeonHouse, a deflationary token launchpad on Solana.
+
+## Key Facts
+- Program: `BV1RxkAaD5DjXMsnofkVikFUUYdrDg1v8YgsQ3iyDNoL` (Anchor, Token-2022)
+- All tokens are Token-2022 with MetadataPointer extension (6 decimals)
+- Bonding curve: constant product AMM (x * y = k)
+- Quote assets: PIGEON, SOL (wSOL), SKR
+- Fee: 2% per trade (1.5% burn/reserve + 0.5% treasury)
+- Graduation: auto-migrate to Raydium CPMM with locked LP
+
+## Token Addresses
+- PIGEON: `4fSWEw2wbYEUCcMtitzmeGUfqinoafXxkhqZrA9Gpump` (Token-2022)
+- SOL: `So11111111111111111111111111111111111111112` (SPL Token)
+- SKR: `SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3` (SPL Token)
+
+## PDAs
+- GlobalConfig: `["pigeon_house_config"]`
+- BondingCurve: `["bonding_curve", token_mint]`
+- FeeVault: `["fee_vault"]`
+- QuoteAssetConfig: `["quote_asset", quote_mint]`
+
+## API Endpoints
+- `GET /api/platform` — all tokens
+- `GET /api/token/{mint}` — bonding curve state
+- `GET /api/trades/{mint}` — recent trades
+- `GET /api/leaderboard` — creator leaderboard
+- `GET /api/prices` — PIGEON/SOL prices
+
+## Important
+- Use TOKEN_2022_PROGRAM_ID for PIGEON and all PigeonHouse tokens
+- Use TOKEN_PROGRAM_ID for SOL (wSOL) and SKR
+- ATAs owned by bonding_curve PDA must use `allowOwnerOffCurve: true`
+- IDL: https://941pigeon.fun/idl/pigeon_house.json
+- Referrer goes in remaining_accounts[0] for fee share
+
+## MCP Server
+For live data queries, use the PigeonHouse MCP server:
+```json
+{ "mcpServers": { "pigeonhouse": { "command": "npx", "args": ["pigeonhouse-mcp"] } } }
+```
